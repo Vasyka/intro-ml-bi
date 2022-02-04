@@ -26,8 +26,6 @@
 
 ## Оценивание
 
-HW = (HW1+HW2+HW3+HW4)/4
-
 **Final grade** = 0.4 * HW + 0.3 * Midterm + 0.3 * Exam
 
 
