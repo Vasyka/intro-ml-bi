@@ -4,3 +4,6 @@
 - Jupyter and python intro.ipynb - Напоминание как использовать Jupyter Notebook или Jupyter Lab и памятка по Python
 - sem01_numpy.ipynb - Введение в NumPy
 - sem01_pandas.ipynb - Введение в Pandas и разведочный анализ данных
+
+Сервис для скачивания: 
+https://minhaskamal.github.io/DownGit/#/home
