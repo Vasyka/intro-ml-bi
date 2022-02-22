@@ -1,0 +1,2 @@
+- sem02-knn.ipynb - файл с семинаром
+- lecture02_sklearn&knn.ipynb - файл с лекцией
