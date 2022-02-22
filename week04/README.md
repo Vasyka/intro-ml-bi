@@ -1,1 +1,2 @@
-sem04_gradient.ipynb - файл с семинаром
+- sem04_gradient.ipynb - файл с семинаром
+- lecture04_gd.ipynb - файл с лекцией
