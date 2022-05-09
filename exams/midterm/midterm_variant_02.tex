@@ -1,0 +1,630 @@
+\documentclass[12pt]{article}
+
+\usepackage{tikz} % картинки в tikz
+\usepackage{microtype} % свешивание пунктуации
+\usepackage{array} % для столбцов фиксированной ширины
+\usepackage{comment} % для комментирования целых окружений
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts} % куча стандартных математических плюшек
+
+\usepackage[top=2cm, left=1cm, right=1cm, bottom=2cm]{geometry} % размер текста на странице
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+ 
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+
+\usepackage{caption} % подписи к рисункам
+\usepackage{hyperref} % гиперссылки
+\usepackage{multicol} % текст в несколько столбцов
+
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Введение в машинное обучение, ВШЭ}
+\chead{}
+\rhead{2022-04-01}
+\lfoot{Вариант $\Omega \Gamma \Delta$}
+\rfoot{Паниковать запрещается!}
+%\rfoot{Тест}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage{ifthen} % для написания условий
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет Последний день Помпеи}
+% \listoftodos --- печатает все поставленные \todo'шки
+
+
+% более красивые таблицы
+\usepackage{booktabs}
+% заповеди из докупентации:
+% 1. Не используйте вертикальные линни
+% 2. Не используйте двойные линии
+% 3. Единицы измерения - в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+% download "Linux Libertine" fonts:
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+\setmainfont{Linux Libertine O} % or Helvetica, Arial, Cambria
+% why do we need \newfontfamily:
+% http://tex.stackexchange.com/questions/91507/
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+
+% Математические шрифты 
+% Математические шрифты 
+\usepackage{unicode-math}     
+\setmathfont[math-style=upright]{euler.otf} 
+
+\setmathfont[range={\mathbb, \mathop, \heartsuit, \angle, \smile, \varheartsuit}]{Asana-Math.otf}
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*}
+
+
+% мои цвета https://www.artlebedev.ru/colors/
+\definecolor{titleblue}{rgb}{0.2,0.4,0.6} 
+\definecolor{blue}{rgb}{0.2,0.4,0.6} 
+\definecolor{red}{rgb}{1,0,0.2} 
+\definecolor{green}{rgb}{0,0.6,0} 
+\definecolor{purp}{rgb}{0.4,0,0.8} 
+
+% цвета из geogebra 
+\definecolor{litebrown}{rgb}{0.6,0.2,0}
+\definecolor{darkbrown}{rgb}{0.75,0.75,0.75}
+
+% Гиперссылки
+\usepackage{xcolor}   % разные цвета
+
+\usepackage{hyperref}
+\hypersetup{
+  unicode=true,           % позволяет использовать юникодные символы
+  colorlinks=true,        % true - цветные ссылки
+  urlcolor=blue,          % цвет ссылки на url
+  linkcolor=black,          % внутренние ссылки
+  citecolor=green,        % на библиографию
+  breaklinks              % если ссылка не умещается в одну строку, разбивать её на две части?
+}
+
+% эпиграфы
+\usepackage{epigraph}
+\setlength\epigraphwidth{.7\textwidth}
+\setlength\epigraphrule{0pt}
+
+% Математические операторы первой необходимости:
+\DeclareMathOperator{\sgn}{sign}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\E}{\mathop{E}}
+\DeclareMathOperator{\Med}{Med}
+\DeclareMathOperator{\Mod}{Mod}
+\DeclareMathOperator*{\plim}{plim}
+
+\DeclareMathOperator{\logloss}{logloss}
+\DeclareMathOperator{\softmax}{softmax}
+
+\DeclareMathOperator{\tr}{tr}
+
+% команды пореже
+\newcommand{\const}{\mathrm{const}}  % const прямым начертанием
+\newcommand{\iid}{\sim i.\,i.\,d.}  % ну вы поняли...
+\newcommand{\fr}[2]{\ensuremath{^{#1}/_{#2}}}   % особая дробь
+\newcommand{\ind}[1]{\mathbbm{1}_{\{#1\}}} % Индикатор события
+\newcommand{\dx}[1]{\,\mathrm{d}#1} % для интеграла: маленький отступ и прямая d
+
+% одеваем шапки на частые штуки
+\def \hb{\hat{\beta}}
+\def \hs{\hat{s}}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \he{\hat{\varepsilon}}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+
+% Греческие буквы
+\def \a{\alpha}
+\def \b{\beta}
+\def \t{\tau}
+\def \dt{\delta}
+\def \e{\varepsilon}
+\def \ga{\gamma}
+\def \kp{\varkappa}
+\def \la{\lambda}
+\def \sg{\sigma}
+\def \tt{\theta}
+\def \Dt{\Delta}
+\def \La{\Lambda}
+\def \Sg{\Sigma}
+\def \Tt{\Theta}
+\def \Om{\Omega}
+\def \om{\omega}
+
+% Готика
+\def \mA{\mathcal{A}}
+\def \mB{\mathcal{B}}
+\def \mC{\mathcal{C}}
+\def \mE{\mathcal{E}}
+\def \mF{\mathcal{F}}
+\def \mH{\mathcal{H}}
+\def \mL{\mathcal{L}}
+\def \mN{\mathcal{N}}
+\def \mU{\mathcal{U}}
+\def \mV{\mathcal{V}}
+\def \mW{\mathcal{W}}
+
+% Жирные буквы
+\def \mbb{\mathbb}
+\def \RR{\mbb R}
+\def \NN{\mbb N}
+\def \ZZ{\mbb Z}
+\def \PP{\mbb{P}}
+\def \QQ{\mbb Q}
+
+\def \putyourname{\fbox{
+    \begin{minipage}{42em}
+      Фамилия, имя, номер группы:\vspace*{3ex}\par
+      \noindent\dotfill\vspace{2mm}
+    \end{minipage}
+  }
+}
+
+\def \checktable{
+
+  \vspace{5pt}
+  Табличка для проверяющих работу:
+
+\vspace{5pt}
+
+  \begin{tabular}{|m{2cm}|m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{2cm}|}
+\toprule
+    Тест & 1 &  2 & 3 & 4 & 5 & Итого \\
+\midrule
+    &  &  & & & & \\
+    &  &  & & & & \\
+ \bottomrule
+\end{tabular}
+}
+
+
+\def \testtable{
+
+\vspace{5pt}
+  Внесите сюда ответы на тест:
+
+\vspace{5pt}
+
+\begin{tabular}{|m{2cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|}
+\toprule
+    Вопрос & 1 &  2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+\midrule
+    Ответ &  &  & & & & & & & & \\
+ \bottomrule
+\end{tabular}
+}
+
+
+% [1][3] 1 = one argument, 3 = value if missing
+% эта магия создаёт окружение answerlist
+% именно в окружении answerlist записаны варианты ответов в подключаемых exerciseXX
+% просто \begin{answerlist} сделает ответы в три столбца
+% если ответы длинные, то надо в них руками сделать
+% \begin{answerlist}[1] чтобы они шли в один столбец
+\newenvironment{answerlist}[1][3]{
+\begin{multicols}{#1}
+
+\begin{enumerate}[label=\fbox{\emph{\Alph*}},ref=\emph{\alph*}]
+}
+{
+\item Нет верного ответа.
+\end{enumerate}
+\end{multicols}
+}
+
+% BB: unicol version. don't know why \ifthenelse fails in second part of new-env
+\newenvironment{answerlistu}{
+\begin{enumerate}[label=\fbox{\emph{\Alph*}},ref=\emph{\alph*}]
+}
+{
+\item Нет верного ответа.
+\end{enumerate}
+}
+
+
+\excludecomment{solution} % without solutions
+
+\theoremstyle{definition}
+\newtheorem{question}{Вопрос}
+
+\usepackage{tikzlings}
+\usepackage{tikzducks}
+
+\usepackage{alltt}
+
+\usepackage{emoji}
+
+\begin{document}
+
+\putyourname
+
+\testtable
+
+\checktable
+
+\epigraph{Позитивная мотивация — явно не мой конёк, и мы все умрём. \\ Всё уже было до нас, можно выдохнуть страх, и уставить глаза в небосклон. \\ Если этой контрольной и сопротивляться, то не с печальным лицом. \\ Всё повторится не раз, но мы живы сейчас, нами рано удобрять чернозём.}{\textit{Oxxxymiron и Тося Чайкина про мидтёрм по ML (2022)}}
+
+
+Работа состоит из трёх частей: тестовая, задачи и ответы на открытые вопросы. Списывание карается обнулением работы. Удачи!
+
+
+\section*{Часть первая: тестовая} 
+
+Дайте ответ на $10$ тестовых вопросов. Каждый вопрос стоит $3$ балла. Никакие дополнительные пояснений в этой части работы от вас не требуются.
+
+\begin{question}
+У императора Куско есть база данных обо всех бизонах, пасущихся на просторах его необъятной империи. Для удобства император хочет разбить всех бизонов на $30$ стад таким образом, чтобы в каждом были похожие по своим характеристикам особи. Какую задачу решает император солнца? 
+\begin{answerlist}
+   \item  Регрессия
+   \item  Классификация
+   \item  Кластеризация
+   \item  Ранжирование
+   \item  Рекомендаии
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Для чего можно использовать кросс-валидацию?
+\begin{answerlist}
+   \item  Для подбора лучшего коэффициента регуляризации
+   \item  Для оценки того, как модель будет работать на новых данных
+   \item  Для подбора оптимального способа измерения ошибки модели на новых данных
+  \item  Для выбора лучшего типа модели
+  \item  Для улучшения качества обучающей выборки
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Good answer :)
+  \item Good answer :)
+\end{answerlist}
+\end{solution}
+
+\newpage 
+
+\begin{question}
+Выберите все верные утверждения про переобучение (overfitting).
+\begin{answerlist}
+   \item  Метод ближайших соседей на этапе обучения просто запоминает всю выборку, поэтому он не переобучается
+   \item  $L_2$-регуляризатор добавляют в линейную модель, чтобы не дать ей переобучиться
+   \item  Если качество модели на тестовой выборке ниже, чем на обучающей, скорее всего, модель переобучилась
+   \item  Валидационную выборку выделяют, чтобы подобрать на ней гиперпараметры
+   \item  Чтобы избежать переобучения, качество модели достаточно измерить на той же самой выборке, на которой обучаешь модель
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Good answer :)
+  \item Good answer :)
+  \item Good answer :)
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Выберите все верные утверждения про градиентный спуск
+\begin{answerlist}
+   \item  Градиентный спуск гарантированно находит глобальный оптимум
+   \item  Метод ближайших соседей обучается градиентным спуском
+   \item  Градиентный спуск не гарантирует нахождение глобального оптимума
+   \item  Масштабирование признаков ускоряет работу градиентного спуска
+   \item  При обучении логистической регрессии с помощью градиентного спуска напрямую оптимизируют долю верных ответов, $accuracy$
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Good answer :)
+  \item Good answer :)
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Какие из сопособов приведённых ниже можно использовать для борьбы с выбросами при обучении линейных моделей? 
+\begin{answerlist}
+   \item Заменить выбросы на какой-нибудь квантиль, например, медиану
+   \item Выбросить все наблюдения-выбросы
+   \item Использовать функцию потерь, которая нечувствительна к выбросам (Huber Loss и тп)
+   \item Стандартизировать данные
+   \item Выбросы --- это категориальные переменные, для них можно сделать OHE-преобразование
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Good answer :)
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Рассмотрим выборку, состоящую из одного признака, и линейную модель над этой выборкой. Говорят, что эту модель можно изобразить как прямую. А в каких координатах? Признак обозначается $x$, целевая переменная $y$, веса модели — $w_0$ и $w_1$
+\begin{answerlist}
+   \item  $x$
+   \item  $(x, y)$
+   \item  $(w_1, y)$
+   \item  $(w_0, w_1)$
+   \item  $(x, y, w_0, w_1)$
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+\begin{question}
+Какие из функций ниже логично использовать для оценки качества линейной модели на тестовой выборке? 
+\begin{answerlist}
+   \item  \( \frac{1}{n} \sum_{i=1}^n (y_i - \hat y_i) \)
+   \item  \( \frac{1}{n} \sum_{i=1}^n|y_i - \hat y_i| \)
+   \item  \( \frac{1}{n} \sum_{i=1}^n (y_i - \hat y_i)^2 + \sum_{j=1}^k w_j^2 \)
+   \item  \( \frac{1}{n} \sum_{i=1}^n |y_i - \hat y_i| + \sum_{j=1}^k w_j^2 \)
+   \item  \( \sum_{j=1}^k w_j^2 \)
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+\newpage 
+
+\begin{question}
+Льюис и Кларк идут с экспедицией на Дикий Запад и предсказывают население каждого нового племени с помощью метода двух ближайших соседей. Все прогнозы строятся с учётом того, каким получилось расстояние между племенами. 
+
+Если нарисовать регион на карте, окажется что племя Сиу чилсенностью $10$ тыc. живёт по координатам $(0, 0)$. Племя Ото численностью $20$ тыс. живет по координатам $(3, 5)$.  Пляемя Миссури живёт по координатам  $(0, 1)$. Каким будет примерный прогноз для его численности?  
+
+\begin{answerlist}
+   \item $12$ тыс.
+   \item $15$ тыс.
+   \item $20$ тыс.
+   \item $10$ тыс.
+   \item $14$ тыс.
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Мир пришёл на Великие Равнины. Несколько индейских племён зарыли топор войны и решили раскочегарить трубку мира. Шаман племени Апачи умеет предсказывать, будет ли заключён мирный договор. Он делает с помощью логистической регрессии, обученной на предыдущих конфликтах: 
+
+\[ 
+\mathbb{P}(y_i = 1 \mid x_i) =  \frac{1}{1 + exp(100 - 20 \cdot x_i)},
+\]
+
+где $x$ --- время в минутах, которое вожди провели за трубкой мира.  Выберите все верные утверждения об этой модели. 
+
+\begin{answerlist}
+   \item  Если трубку мира не раскурят вообще, мир наступит с очень низкой вероятностью
+   \item  Если вожди курили трубку $5$ минут, мир будет заключен с вероятностью $0.25$
+   \item  С каждой дополнительной минутой за трубкой мира, вероятность заключить мир уменьшается 
+   \item  \emoji{green-apple} \emoji{red-apple}  \emoji{dashing-away} \mbox{ } \emoji{smiling-face-with-sunglasses} \emoji{thumbs-up}
+   \item  С каждой дополнительной минутой за трубкой мира, вероятность заключить мир растёт
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Good answer :)
+  \item Good answer :)
+\end{answerlist}
+\end{solution}
+
+
+
+
+\begin{question}
+Мы хотим обучать модель, напрямую максимизируя полноту. Выберите в списке ниже все причины, почему это плохая идея? 
+\begin{answerlist}
+   \item Максимальную полноту можно получить тривиальной моделью, которая все объекты относит к положительному классу
+   \item Полнота зависит от порога
+   \item Полноту нельзя продиффериенцировать 
+   \item Полнота очень плохо работает, если выборка несбалансированная
+   \item Максимальную полноту можно получить тривиальной моделью, которая все объекты относит к отрицательному классу
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Good answer :)
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+
+
+\newpage 
+
+ 
+\section*{Часть вторая: открытые вопросы}
+
+Эта часть состоит из открытых вопросов. На них необходимо дать краткие, но ёмкие ответы. За каждый ответ вы можете получить 10 баллов.
+
+\begin{question}
+Предложите для каждой из перечисленных ниже задач, как сформулировать их в терминах машинного обучения: укажите, что будет являться объектом и целевой переменной, а также напишите тип задачи.
+
+\begin{enumerate}
+    \item Фармкомпания Wachowski Inc. производит два вида таблеток: красные и синие. К сожалению, конвейерная лента на заводе иногда выходит из строя и в одну блистерную упаковку попадают таблетки разного цвета. Мы хотели бы отбраковывать такие упаковки.
+    
+  \item Студент решил воспользоваться высокими технологиями при подготовке к экзамену и строит модель, которая предскажет его оценку.
+\end{enumerate}
+\end{question}
+
+
+\vspace{4cm} 
+
+
+\begin{question}
+Несколько архитекторов строят мемориал в честь вождя племени Оглала, Неистового Коня. Архитекторы хотят оптимизировать поставки стройматериалов. Для этого они предсказывают время прибытия поставки по разным факторам: трафик на дорогах, погода, загруженность складов и т.п. 
+
+Архитекторы хотят понять, какие факторы влияют на доставку сильнее всего. Они обучают линейную регрессию и хотят занулить переменные перед всеми факторами, которые несущественны для их прогнозов. Используется следуюшая функция потерь:
+
+$$
+Q(w) = \frac{1}{n} \sum_{i=1}^n (a(x_i) - y_i) + \lambda \cdot \sum_{i=1}^d w_i^2 \to \max_{w}
+$$
+
+Какие ошибки вы тут видите? Для каждой объясните, к каким последствиям и почему она приведёт, а также как это исправить.
+\end{question}
+
+
+
+\newpage 
+
+\begin{question}
+Объясните мем
+\begin{center}
+  \includegraphics[scale=0.3]{memes3.png}
+\end{center}
+\end{question}
+
+\vspace{5cm} 
+
+
+\begin{question}
+Линейные модели в машинном обучении обучаются с помощью градиентного спуска. На каждой итерации вектор весов $w$ изменяется по какой-то формуле. Выпишите эту формулу. Объясните в ней каждую компоненту и обозначение. 
+\end{question}
+
+
+\newpage 
+
+\begin{question}
+Вождь Маквагабо\footnote{Есть теория, что Голландцам землю за бусы продали не местные индейцы, а шайка мошенников, которая даже не владела этой землёй.} хочет классифицировать бусы из бисера. У него есть $1000$ синих бус и $10^6$ красных. 
+
+Почему для оценки качества классификации не получится использовать долю правильных ответов, accuracy? Приведите примеры моделей, где эта метрика показывает неадекватный результат. Что можно сделать для корректной оценки работы модели в таком случае? 
+\end{question}
+
+
+\newpage 
+
+
+\section*{Часть третья: задачки}
+
+Решите все задания. Все ответы должны быть обоснованы. Решения должны быть прописаны для каждого пункта. Рисунки должны быть чёткими и понятными. Все линии должны быть подписаны. За решение каждой задачи вы можете получить 10 баллов.
+
+\begin{question}
+Индейские Шаманы предсказывают стоимость недвижимости в Сиэтле.  Шаман Одэхингум (лёгкое колебание воды) использует метод ближайших соседей. Шаман Пэпина (виноградная лоза, растущая вокруг дуба) использует линейную регрессию. Шаман Апониви (где ветер вырывает промежуток с корнем) использует случайный лес. 
+
+В тестовой выборке у них есть три дома $y_i$. Для каждого из них шаманы построили прогнозы. 
+
+\begin{center}
+  \begin{tabular}{c|c|c|c}
+    настоящие $y_i$ &  4 & 7 & 1 \\
+    \hline
+    KNN & 4 & 5 & 2  \\
+    линейная регрессия &  5 & 6 & 0 \\
+    случайный лес & 1 & 1 & 1 \\
+  \end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Найдите для прогнозов $MAE$, $MSE$, $RMSE$ и $MAPE$.
+    \item Объясните, зачем от $MSE$ обычно переходят к $RMSE$.
+    \item Объясните, почему $MAE$ считается более устойчивой к выбросам.
+\end{enumerate}
+\end{question}
+
+\newpage 
+
+\begin{question}
+    Покахонтас спасла от смерти капитана Джона Смита, а затем решила задачу классификации. У неё получились следующие прогнозы. 
+    
+    \begin{center}
+      \begin{tabular}{c|c}
+        $y_i$ & $\hat p_i$ \\
+        \hline
+        $1$  & $0.9$ \\
+        $0$ & $0.1$ \\
+        $0$ & $0.75$ \\
+        $0$ & $0.56$ \\
+        $0$ & $0.2$ \\
+        $1$ & $0.37$ \\
+        $0$ & $0.25$ \\   
+      \end{tabular}
+    \end{center}
+    
+    \begin{enumerate}
+      \item  Бинаризуйте ответ по порогу $t$ и посчитайте точность и полноту для $t = 0.3$ и для  $t = 0.8$.
+      \item Постройте ROC-кривую и найдите площадь под ней. 
+    \end{enumerate}
+\end{question}
+
+\end{document}
