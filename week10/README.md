@@ -1,0 +1,2 @@
+- sem10_unsupervised.ipynb - файл с семинаром
+- lec10_unsupervised.ipynb - файл с лекции
