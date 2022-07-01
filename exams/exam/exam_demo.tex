@@ -1,0 +1,610 @@
+\documentclass[12pt]{article}
+
+\usepackage{tikz} % картинки в tikz
+\usepackage{microtype} % свешивание пунктуации
+\usepackage{array} % для столбцов фиксированной ширины
+\usepackage{comment} % для комментирования целых окружений
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering}
+
+\usepackage{amsmath, amssymb, amsthm, amsfonts} % куча стандартных математических плюшек
+
+\usepackage[top=2cm, left=1cm, right=1cm, bottom=2cm]{geometry} % размер текста на странице
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+ 
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+
+\usepackage{caption} % подписи к рисункам
+\usepackage{hyperref} % гиперссылки
+\usepackage{multicol} % текст в несколько столбцов
+
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Введение в машинное обучение, ВШЭ}
+\chead{}
+\rhead{2022-04-01}
+\lfoot{Вариант для наших братанов}
+\rfoot{It's gonna be legen… wait for it… dary!}
+%\rfoot{Тест}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\usepackage{ifthen} % для написания условий
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет Последний день Помпеи}
+% \listoftodos --- печатает все поставленные \todo'шки
+
+
+% более красивые таблицы
+\usepackage{booktabs}
+% заповеди из докупентации:
+% 1. Не используйте вертикальные линни
+% 2. Не используйте двойные линии
+% 3. Единицы измерения - в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+% download "Linux Libertine" fonts:
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+\setmainfont{Linux Libertine O} % or Helvetica, Arial, Cambria
+% why do we need \newfontfamily:
+% http://tex.stackexchange.com/questions/91507/
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+
+% Математические шрифты 
+% Математические шрифты 
+\usepackage{unicode-math}     
+\setmathfont[math-style=upright]{euler.otf} 
+
+\setmathfont[range={\mathbb, \mathop, \heartsuit, \angle, \smile, \varheartsuit}]{Asana-Math.otf}
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*}
+
+
+% мои цвета https://www.artlebedev.ru/colors/
+\definecolor{titleblue}{rgb}{0.2,0.4,0.6} 
+\definecolor{blue}{rgb}{0.2,0.4,0.6} 
+\definecolor{red}{rgb}{1,0,0.2} 
+\definecolor{green}{rgb}{0,0.6,0} 
+\definecolor{purp}{rgb}{0.4,0,0.8} 
+
+% цвета из geogebra 
+\definecolor{litebrown}{rgb}{0.6,0.2,0}
+\definecolor{darkbrown}{rgb}{0.75,0.75,0.75}
+
+% Гиперссылки
+\usepackage{xcolor}   % разные цвета
+
+\usepackage{hyperref}
+\hypersetup{
+  unicode=true,           % позволяет использовать юникодные символы
+  colorlinks=true,        % true - цветные ссылки
+  urlcolor=blue,          % цвет ссылки на url
+  linkcolor=black,          % внутренние ссылки
+  citecolor=green,        % на библиографию
+  breaklinks              % если ссылка не умещается в одну строку, разбивать её на две части?
+}
+
+% эпиграфы
+\usepackage{epigraph}
+\setlength\epigraphwidth{.5\textwidth}
+\setlength\epigraphrule{0pt}
+
+% Математические операторы первой необходимости:
+\DeclareMathOperator{\sgn}{sign}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\E}{\mathop{E}}
+\DeclareMathOperator{\Med}{Med}
+\DeclareMathOperator{\Mod}{Mod}
+\DeclareMathOperator*{\plim}{plim}
+
+\DeclareMathOperator{\logloss}{logloss}
+\DeclareMathOperator{\softmax}{softmax}
+
+\DeclareMathOperator{\tr}{tr}
+
+% команды пореже
+\newcommand{\const}{\mathrm{const}}  % const прямым начертанием
+\newcommand{\iid}{\sim i.\,i.\,d.}  % ну вы поняли...
+\newcommand{\fr}[2]{\ensuremath{^{#1}/_{#2}}}   % особая дробь
+\newcommand{\ind}[1]{\mathbbm{1}_{\{#1\}}} % Индикатор события
+\newcommand{\dx}[1]{\,\mathrm{d}#1} % для интеграла: маленький отступ и прямая d
+
+% одеваем шапки на частые штуки
+\def \hb{\hat{\beta}}
+\def \hs{\hat{s}}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \he{\hat{\varepsilon}}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+
+% Греческие буквы
+\def \a{\alpha}
+\def \b{\beta}
+\def \t{\tau}
+\def \dt{\delta}
+\def \e{\varepsilon}
+\def \ga{\gamma}
+\def \kp{\varkappa}
+\def \la{\lambda}
+\def \sg{\sigma}
+\def \tt{\theta}
+\def \Dt{\Delta}
+\def \La{\Lambda}
+\def \Sg{\Sigma}
+\def \Tt{\Theta}
+\def \Om{\Omega}
+\def \om{\omega}
+
+% Готика
+\def \mA{\mathcal{A}}
+\def \mB{\mathcal{B}}
+\def \mC{\mathcal{C}}
+\def \mE{\mathcal{E}}
+\def \mF{\mathcal{F}}
+\def \mH{\mathcal{H}}
+\def \mL{\mathcal{L}}
+\def \mN{\mathcal{N}}
+\def \mU{\mathcal{U}}
+\def \mV{\mathcal{V}}
+\def \mW{\mathcal{W}}
+
+% Жирные буквы
+\def \mbb{\mathbb}
+\def \RR{\mbb R}
+\def \NN{\mbb N}
+\def \ZZ{\mbb Z}
+\def \PP{\mbb{P}}
+\def \QQ{\mbb Q}
+
+\def \putyourname{\fbox{
+    \begin{minipage}{42em}
+      Фамилия, имя, номер группы:\vspace*{3ex}\par
+      \noindent\dotfill\vspace{2mm}
+    \end{minipage}
+  }
+}
+
+\def \checktable{
+
+  \vspace{5pt}
+  Табличка для проверяющих работу:
+
+\vspace{5pt}
+
+  \begin{tabular}{|m{2cm}|m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{1cm}|m{2cm}|}
+\toprule
+    Вопрос & 11 &  12 & 13 & 14 & 15 & 16 & 17 & Итого \\
+\midrule
+    Баллы &  &  & & & & & &  \\
+ \bottomrule
+\end{tabular}
+}
+
+
+\def \testtable{
+
+\vspace{5pt}
+  Внесите сюда ответы на тест:
+
+\vspace{5pt}
+
+\begin{tabular}{|m{2cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|m{0.6cm}|}
+\toprule
+    Вопрос & 1 &  2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+\midrule
+    Ответ &  &  & & & & & & & & \\
+ \bottomrule
+\end{tabular}
+}
+
+
+% [1][3] 1 = one argument, 3 = value if missing
+% эта магия создаёт окружение answerlist
+% именно в окружении answerlist записаны варианты ответов в подключаемых exerciseXX
+% просто \begin{answerlist} сделает ответы в три столбца
+% если ответы длинные, то надо в них руками сделать
+% \begin{answerlist}[1] чтобы они шли в один столбец
+\newenvironment{answerlist}[1][3]{
+\begin{multicols}{#1}
+
+\begin{enumerate}[label=\fbox{\emph{\Alph*}},ref=\emph{\alph*}]
+}
+{
+\item Нет верного ответа.
+\end{enumerate}
+\end{multicols}
+}
+
+% BB: unicol version. don't know why \ifthenelse fails in second part of new-env
+\newenvironment{answerlistu}{
+\begin{enumerate}[label=\fbox{\emph{\Alph*}},ref=\emph{\alph*}]
+}
+{
+\item Нет верного ответа.
+\end{enumerate}
+}
+
+
+\excludecomment{solution} % without solutions
+
+\theoremstyle{definition}
+\newtheorem{question}{Вопрос}
+
+\usepackage{tikzlings}
+\usepackage{tikzducks}
+
+\usepackage{alltt}
+
+\begin{document}
+
+\putyourname
+
+\testtable
+
+\checktable
+
+\mbox{ }
+
+\epigraph{Братан никогда не обижается, если другой Братан не перезвонил, или не ответил на сообщение, своевременно.}{\textit{Кодекс Братана: Статья 145}}
+
+\textbf{Это нулевой вариант экзамена. Он нужен для того, чтобы его формат не стал для вас сюрпризом.} Работа состоит из трёх частей: тестовая, задачи и ответы на открытые вопросы. Списывание карается обнулением работы. Удачи!
+
+\section*{Часть первая: тестовая} 
+
+Дайте ответ на $10$ тестовых вопросов. Каждый вопрос стоит $3$ балла. Никакие дополнительные пояснений в этой части работы от вас не требуются.
+
+\begin{question}
+Выберите одно верное утверждение про решающие деревья
+\begin{answerlist}
+  \item  В каждой внутренней вершине дерева проверяется некоторое условие
+  \item  В каждой внутренней вершине дерева выдаётся некоторый прогноз
+  \item  В каждой листовой вершине дерева проверятеся некоторое условие
+  \item  Каждая листова вершина дерева связана как минимум ещё с двумя вершинами
+%   \item  Чем глубже дерево, тем более сложная получается модель
+%   \item  Чем глубже дерево, тем менее переобученная получается модель
+  \item  С помощью решающего дерева можно идеально решить задачи только с линейно разделимой выборкой 
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+\begin{question}
+Выберите одно верное утверждение про случайный лес
+\begin{answerlist}
+%   \item Случайный лес \textbf{НЕ} переобучается с ростом числа деревьев
+  \item В случайном лесу каждое новое дерево исправляет ошибки предыдущих
+  \item Случайный лес переобучается с ростом числа деревьев
+  \item При обучении случайного леса используют \textbf{НЕ} глубокие деревья
+  \item Случайный лес непригоден для задачи классификации
+%   \item При обучении случайного леса используют глубокие деревья
+  \item Случайный лес позволяет оценить обобщающую способность без тестовой выборки
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :( 
+  \item Bad answer :( 
+  \item Bad answer :(
+  \item Bad answer :( 
+  \item Good answer :)
+\end{answerlist}
+\end{solution}
+
+\newpage 
+
+\begin{question}
+Маршал смотрит хоккей. Все предыдущие сезоны он записывал количество игр, которые выиграли <<Викинги>>. Также он записывал количество пинт пива, которое он выпил в баре. Теперь Маршал хочет обучить решающее дерево предсказывать число победных игр по выпитым пинтам. В качестве критерия разбиения вершины на две он использует MSE. Какое значение порога будет выбрано для разбиения на первом уровне дерева? 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{>{\bfseries}cccccccc}
+        \toprule
+         пинты & $4$ & $5$ & $6$ & $7$ & $8$  \\ \midrule
+         победы & $2$ & $4$ & $3$ & $5$ & $10$ \\
+         \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{answerlist}
+  \item  $4.5$
+  \item  $5.5$
+  \item  $6.5$
+  \item  $7.5$
+  \item  $8.5$
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Good answer :) % Лень считать какой правильный 
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+\begin{question}
+Лили обучает алгоритм машинного обучения предсказывать стоимость картин в долларах. Какой из алгоритмов, перечисленных ниже, может выдать отрицательные прогнозы, несмотря на то, что в обучающей выборке нет отрицательных цен? 
+\begin{answerlist}
+%   \item  Линейная регрессия
+  \item  Глубокое решающее дерево
+  \item  Неглубокое решающее дерево
+  \item  Случайный лес
+  \item  Градиентный бустинг
+  \item  Метод ближайших соседей
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Good answer :)
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Стелла обучает градиентный бустинг. В качестве функции потерь она использует $MAE$. Как будут выглядеть сдвиги $s_i$? 
+\begin{answerlist}
+  \item  $y_i - a(x_i)$
+  \item  $|y_i - a(x_i)|$
+  \item  $sign(y_i - a(x_i))$
+  \item  $sign(|y_i - a(x_i)|)$
+  \item  $(y_i - a(x_i))^2$
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Робин обучила случайный лес из трёх деревьев для регрессии. Они предсказали $4, -2, 7.$ Каким будет итоговое предсказание леса? 
+\begin{answerlist}
+  \item  $3$
+  \item  $11$
+  \item  $4$
+  \item  $6$
+  \item  $-3$
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Выберите одно верное утверждения про смещение и разброс
+\begin{answerlist}
+  \item У глубоких деревьев высокий разброс и низкое смещение
+%   \item Алгоритмы с маленьким смещением больше подвержены переобучению
+  \item У деревьев не бывает смещения и разброса
+  \item Алгоритмы с маленьким смещением не подвержены переобучению
+  \item У глубоких деревьев высокое смещение и низкий разброс
+  \item Более сложные модели обычно обладают более высоким смещением
+%   \item Более сложные модели обычно обладают более низким смещением
+%   \item Алгоритмы с высоким смещением больше подвержены переобучению
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Good answer :)
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+\newpage 
+
+\begin{question}
+Выберите одно верное утверждения про K-means:
+\begin{answerlist}
+  \item  Метод сам выбирает необходимое число кластеров.
+  \item  Метод зависит от выбора начального положения центров кластеров
+  \item  Метод гарантированно сходится за 1000 итераций
+%   \item  Мы должны заказать число кластеров перед запуском метода
+  \item  K-means и DBSCAN это один и тот же метод
+  \item  Метод находит шумовые объекты и выбросы и не учитывает их при кластеризации
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Good answer :)
+  \item Bad answer :(
+  \item Good answer :)
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Тэд Мозби, архитектор, хочет выбрать место для своего нового здания. Каждое место в городе описывается $1000$ признаков. Тэд хочет сжать пространство этих признаков до двух и изобразить все места на плоскости. Какой алгоритм может ему в этом помочь? 
+\begin{answerlist}
+  \item  Градиентный бустинг
+  \item  ALS
+  \item  Случайный лес
+  \item  DBSCAN
+  \item  Логистическая регрессия
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+\end{answerlist}
+\end{solution}
+
+
+\begin{question}
+Лили рекомендует Тэду заказать себе бургер. Маршал пробовал бургер, ему понравилось. А ещё им обоим до этого понравилась пицца. Как называется такой тип рекомендаций? 
+\begin{answerlist}
+  \item  Матричная факторизация
+  \item  Item based
+  \item  ALS
+  \item  Косинусные
+  \item  User based
+\end{answerlist}
+\end{question}
+
+\begin{solution}
+\begin{answerlist}
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Bad answer :(
+  \item Good answer :)
+\end{answerlist}
+\end{solution}
+
+\newpage 
+
+\section*{Часть вторая: открытые вопросы}
+
+Эта часть состоит из открытых вопросов. На них необходимо дать краткие, но ёмкие ответы. За каждый ответ вы можете получить 10 баллов.
+
+
+\begin{question}
+    У Маршала есть диаграмма рассеяния. Постройте по ней классификационное дерево для зависимой переменной $y$:
+    
+    \begin{center}
+      \begin{tikzpicture}[scale = 0.015]
+      \input{tree_scatter_data.tikz}
+      \end{tikzpicture}
+    \end{center}
+\end{question}
+
+
+\vspace{5cm} 
+
+
+\begin{question}
+При обучении случайного леса можно оценивать важность признаков. Опишите здесь один из алгоритмов, с помощью которого это можно сделать.
+\end{question}
+
+\newpage
+
+
+\begin{question}
+Виктория рассматривает следующий способ обучения базовой модели $b_N(x)$ в градиентном бустинге для функции потерь $L(y, x)$: 
+
+\[
+\frac{1}{\ell} \sum_{i = 1}^{\ell} (s_i - a_N(x_i)) \to \min_{a_N}; \qquad s_i = \frac{\partial}{\partial z} L(s_i, z) \left|_{z = b_{N-1}(x_i)} \right.
+\]
+
+Найдите в формулах все ошибки. Объясните, почему это ошибки и исправьте их. 
+\end{question}
+
+
+\vspace{7cm} 
+
+\begin{question}
+Объясните, как работает метод главных компонент. Для решения каких задач он может использоваться? 
+\end{question}
+
+\newpage 
+
+\begin{question}
+Братаны собрались на площади и собираются разбиться на группы с помощью алгоритма DBSCAN. В качестве параметра $\varepsilon$ братаны использут радиус синей окружности, нанесённой на рисунок. Параметр \textit{min\_samples} равен $3$. Сам братан, в окрестности которого мы ищем других братанов, тоже входит в эту тройку. 
+
+Сколько кластеров и почему выделит DBSCAN? Отметьте их на картинке. Приведите пример объектов, которые окажутся граничными. Отметьте их на рисунке и объясните почему так произойдёт. 
+
+    \begin{center}
+        \includegraphics[scale=0.25]{bro_DBSCAN.png}
+    \end{center}
+\end{question}
+
+
+\newpage 
+
+
+\section*{Часть третья: задачки}
+
+Решите все задания. Все ответы должны быть обоснованы. Решения должны быть прописаны для каждого пункта. Рисунки должны быть чёткими и понятными. Все линии должны быть подписаны. За решение каждой задачи вы можете получить 10 баллов.
+
+
+\begin{question}
+На картинке ниже синими точками изображены бары. Ребята хотят кластеризовать их с помощью $K$-means на $4$ кластера. Помогите им.
+
+Для поиска расстояний используется манхеттенская метрика. В качестве начальных точек используются $(0, 2)$, $(0, 1)$, $(−1, −3)$, $(−1, −2)$.
+
+\begin{center}
+    \includegraphics[scale=0.3]{for_k_means.png}
+\end{center}
+\end{question}
+
+
+\newpage 
+
+\begin{question}
+Барни и Тэд зашли на youtube со своих компьютеров. Они получили одинаковую выдачу из четырёх видосов: 
+
+\begin{enumerate}
+    \item  History of the empire state building
+    \item  Robin Sparkles-Let's Go To The Mall'
+    \item  How to use playbook correctly
+    \item  Barney Stinson - Nothing Suits Me Like A Suit
+\end{enumerate}
+
+Для Барни оказались релевантны второй и третий ролилки. Для Тэда первый и четвёртый. Посчитайте значение метрики $map@4.$ Объясните в чём заключается её смысл. 
+\end{question}
+
+
+\end{document}
+
